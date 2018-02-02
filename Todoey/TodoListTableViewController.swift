@@ -12,25 +12,15 @@ class TodoListTableViewController: UITableViewController {
 
     var items = [Item]()
     
-    let defaults = UserDefaults.standard
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let item1 = Item()
-        item1.title = "Get milk"
-        items.append(item1)
+        print(dataFilePath)
+        loadItems()
        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-//
-//            itemArray = items
-//        }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     //MARK: - UITableViewDataSource
@@ -56,6 +46,8 @@ class TodoListTableViewController: UITableViewController {
         let item = items[indexPath.row]
         
         item.done = !item.done
+        
+        saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -95,5 +87,29 @@ class TodoListTableViewController: UITableViewController {
         
         present(alert, animated: true, completion: nil)
         
+    }
+    func loadItems() {
+        
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do {
+            items = try decoder.decode([Item].self, from: data)
+            } catch {
+                
+            }
+        }
+    }
+    
+    func saveItems() {
+        
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(items)
+            try data.write(to: dataFilePath!)
+            
+        } catch {
+            
+        }
     }
 }
