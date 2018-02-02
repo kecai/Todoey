@@ -12,6 +12,7 @@
 		02A902A22024485D00D14740 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02A902A12024485D00D14740 /* Assets.xcassets */; };
 		02A902A52024485D00D14740 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02A902A32024485D00D14740 /* LaunchScreen.storyboard */; };
 		02A902AD202448AA00D14740 /* TodoListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A902AC202448AA00D14740 /* TodoListTableViewController.swift */; };
+		02A902AF2024683500D14740 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A902AE2024683500D14740 /* Item.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		02A902A42024485D00D14740 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02A902A62024485D00D14740 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02A902AC202448AA00D14740 /* TodoListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListTableViewController.swift; sourceTree = "<group>"; };
+		02A902AE2024683500D14740 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				02A902A32024485D00D14740 /* LaunchScreen.storyboard */,
 				02A902A62024485D00D14740 /* Info.plist */,
 				02A902AC202448AA00D14740 /* TodoListTableViewController.swift */,
+				02A902AE2024683500D14740 /* Item.swift */,
 			);
 			path = Todoey;
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02A9029B2024485D00D14740 /* AppDelegate.swift in Sources */,
+				02A902AF2024683500D14740 /* Item.swift in Sources */,
 				02A902AD202448AA00D14740 /* TodoListTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
