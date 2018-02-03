@@ -9,9 +9,14 @@
 import UIKit
 import CoreData
 
-class TodoListTableViewController: UITableViewController {
+class TodoListTableViewController: UITableViewController, UISearchBarDelegate {
 
     var items = [Item]()
+    var category:Category? {
+        didSet {
+            loadItems()
+        }
+    }
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -21,8 +26,6 @@ class TodoListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadItems()
-       
     }
 
     //MARK: - UITableViewDataSource
@@ -70,6 +73,7 @@ class TodoListTableViewController: UITableViewController {
                 
                 item.title = textfield.text!
                 item.done = false
+                item.parentCategory = self.category
             
                 self.items.append(item)
             
@@ -92,17 +96,23 @@ class TodoListTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         
     }
-    func loadItems() {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate:NSPredicate? = nil) {
         
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", category!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate,additionalPredicate])
+        }else {
+        request.predicate = categoryPredicate
+        }
         do {
-            
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
-        items = try context.fetch(request)
-        print(items.count)
+            items = try context.fetch(request)
+            print(items.count)
             
         } catch {
-            
+            print("error fetching data from context \(error)")
         }
+        tableView.reloadData()
     }
     
     func saveItems() {
@@ -111,6 +121,29 @@ class TodoListTableViewController: UITableViewController {
             try context.save()
         } catch {
             
+        }
+    }
+    
+    //MARK: - SearchBarDelegate
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        let predicate = NSPredicate(format:"title CONTAINS %@", searchBar.text!)
+        request.predicate = predicate
+        
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+       
+        loadItems(with: request, predicate: predicate)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async {
+                 searchBar.resignFirstResponder()
+            }
+           
         }
     }
 }
